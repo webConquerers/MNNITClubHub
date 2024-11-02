@@ -1,0 +1,123 @@
+*{margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Aerial" , sans-serif;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: rgb(6, 6, 6);
+    background-size: cover;
+    background-image: url("../assets/icon.webp") ;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.wrapper { 
+    width: 420px;
+    
+    
+   
+    
+    border: 2px solid rgba(74, 172, 12, 0.2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0 , 0 , 0, .2);
+    color: #fff;
+    border-radius: 10px;
+    padding: 50px 50px;
+}
+.wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+    text-decoration-color: black;
+
+}
+.wrapper .input-box {
+    width: 100%;
+    height: 50px;
+    background:transparent;
+    margin: 30px 0;
+}
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #07102c;
+    padding: 20px  45px 20px 2opx;
+}
+.input-box :-ms-input-placeholder {
+    color: #fff;
+    
+}
+.input-box i {
+    position: absolute;
+    right : 20px;
+    top: 50px;
+    transform: translate(-50%);
+    font-size: 20px;
+}
+
+.wrapper .btn {
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: navy;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px  rgba(0 , 0 , 0, .1) ;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+
+}
+.wrapper .password{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #07102c;
+    padding: 20px  45px 20px 2opx;
+}
+.wrapper .input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    border-color: transparent;
+    font-size: 15px;
+    color: black;
+    padding: 20px  45px 20px 2opx;
+}
+.anchor{
+    text-align: right;
+    padding-top:10px ;
+    padding-left: 250px;
+}
+
+#oauth {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   
+   border-radius: 20px;
+   
+
+    
+}
