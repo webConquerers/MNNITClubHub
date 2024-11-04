@@ -4,12 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+
 const HomePage = () => {
   const navigate = useNavigate();
   const HandleClubs = () => {
-    console.log("hapeening");
-    navigate("/UserClubs");
+    console.log("happening");
+    navigate("/ClubOverview");
   };
+  const EditProfile=()=>{
+    console.log("user profile")
+  }
   const clubs = [
     {
       name: "Robotics Club",
@@ -45,6 +49,7 @@ const HomePage = () => {
       time: "1:00 PM",
     },
   ];
+
   return (
     <div className="min-h-screen min-w-full flex flex-col bg-gray-900 text-gray-100">
       <div className="bg-[url('assets/icon.webp')] bg-cover bg-center w-full h-[800px]">
@@ -53,9 +58,8 @@ const HomePage = () => {
             <nav className="bg-sky-900 text-white p-4 flex justify-between">
               <h1 className="text-xl font-bold">MNNITClubHub</h1>
               <div className="flex justify-between">
-                
                 <button
-                  onClick={HandleClubs}
+                  onClick={EditProfile} // Consistent function name
                   className="px-6 flex items-center space-x-2"
                 >
                   <FontAwesomeIcon icon={faUser} />
@@ -64,14 +68,12 @@ const HomePage = () => {
               </div>
             </nav>
             <main className="flex-grow p-8 w-full">
-              
-            
               <section className="mt-12">
                 <h2 className="text-3xl font-semibold text-center text-sky-400 mb-6">
                   Your Clubs
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {clubs.map((club, index) => (
+                  {clubs.map((club, index) => (
                     <div
                       key={index}
                       className="bg-gray-800 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
@@ -80,18 +82,19 @@ const HomePage = () => {
                         {club.name}
                       </h3>
                       <p className="text-gray-300 mb-4">{club.description}</p>
-                      <button className="bg-sky-700 text-gray-100 px-4 py-2 rounded hover:bg-sky-500">
+                      <button
+                        className="bg-sky-700 text-gray-100 px-4 py-2 rounded hover:bg-sky-500"
+                        onClick={HandleClubs}
+                      >
                         See Club Discussions
                       </button>
                     </div>
                   ))}
-                  </div>
+                </div>
               </section>
-
-              
             </main>
           </div>
-          <Footer/>
+          <Footer />
         </div>
       </div>
     </div>

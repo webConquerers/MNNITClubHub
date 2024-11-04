@@ -7,6 +7,7 @@ import RegUser from "./pages/RegUser";
 import AdminDashboard from "./AdminDashboard";
 import UserPage from "./pages/UserPage";
 import UserClubs from "./pages/UserClubs";
+import ClubOverview from "./pages/ClubOverview"
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
           <Route path="/RegUser" element={<RegUser/>}/>
           <Route path="/UserPage" element={<UserPage/>}/>
           <Route path="/UserClubs" element={<UserClubs/>}/>
+          <Route path="/ClubOverview" element={<ClubOverview/>}/>
         </Routes>
       </div>
     </Router>
