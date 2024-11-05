@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+
 const HomePage = () => {
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) setUserName(storedName); 
+  }, []);
+
   const HandleClubs = () => {
-    console.log("hapeening");
+    console.log("Navigating to Clubs");
     navigate("/UserClubs");
   };
+
+  const HandleUser = () => {
+    navigate("/Profile");
+  };
+
   const clubs = [
     {
       name: "Robotics Club",
@@ -56,16 +69,16 @@ const HomePage = () => {
               <div className="flex justify-between">
                 <button
                   onClick={HandleClubs}
-                  className="text-lg text-white font-serif font-normal"
+                  className="text-lg text-white font-serif font-normal py-0"
                 >
                   Your Clubs
                 </button>
                 <button
-                  onClick={HandleClubs}
-                  className="px-6 flex items-center space-x-2"
+                  onClick={HandleUser}
+                  className="px-6 flex items-center space-x-2 py-0"
                 >
                   <FontAwesomeIcon icon={faUser} />
-                  <span>Shourya</span>
+                  <span>{userName || "User"}</span>
                 </button>
               </div>
             </nav>

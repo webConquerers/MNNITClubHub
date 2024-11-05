@@ -1,39 +1,90 @@
-import React from "react";
+import React, { useState } from "react";
 import "../style/SignUp.css";
-import AdminDashboard from "../AdminDashboard";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 
-function SingnUpPage() {
+function SignUpPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const handleDasboard = (event) => {
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Logging in as User");
-    
+    axios.post('http://localhost:3001/RegUser', { name, email, password })
+      .then(result => {
+        console.log(result);
+        if (result.data.success) {
+          toast.success("Registration successful!", {
+            autoClose: 3000
+          });
+          navigate('/LoginUser');  
+        } else {
+          if (result.data.message === "User already registered") {
+            toast.error("Registration failed: User already registered", {
+              autoClose: 3000
+            });
+          } else {
+            toast.error("Registration failed: " + result.data.message, {
+              autoClose: 3000
+            });
+          }
+        }
+      })
+      .catch(err => {
+        console.log("Error in registration request:", err);
+        toast.error("email already exists", {
+          autoClose: 3000
+        });
+      });
   };
-  const HandleSub=()=>{
-    navigate('/LoginUser')
-  }
+
   return (
     <div className="bg">
       <div className="wrapper">
-        <form onSubmit={handleDasboard}>
-          <h1>Register as User</h1>
+        <form onSubmit={handleSubmit}>
+          <h1>Register</h1>
           <div className="input-box">
-            <label for="EmailId">Name</label>
-            <input className="px-5" type="text" id="EmailId " placeholder=" Full Name " />
+            <label htmlFor="name">Name</label>
+            <input
+              className="px-5"
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Full Name"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
             <i className="bx bx-lock"></i>
           </div>
           <div className="input-box">
-            <label for="EmailId">Email-Id</label>
-            <input className="px-5" type="text" id="EmailId " placeholder="EmailId " />
+            <label htmlFor="email">Email-Id</label>
+            <input
+              className="px-5"
+              type="email"
+              id="EmailId"
+              name="email"
+              placeholder="EmailId"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
             <i className="bx bx-lock"></i>
           </div>
           <div className="input-box">
-            <label for="password">Password</label>
-            <input className="px-5"type="password" placeholder="Password " id="password" />
+            <label htmlFor="password">Password</label>
+            <input
+              className="px-5"
+              type="password"
+              placeholder="Password"
+              name="password"
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
           </div>
-          <div className="input"></div>
-          <button type="submit" className="btn" onSubmit={HandleSub} onClick={HandleSub}>
+          <button type="submit" className="btn">
             Register
           </button>
           <button id="oauth">
@@ -41,7 +92,9 @@ function SingnUpPage() {
           </button>
         </form>
       </div>
+      <ToastContainer /> 
     </div>
   );
 }
-export default SingnUpPage;
+
+export default SignUpPage; 

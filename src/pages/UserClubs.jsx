@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect }  from "react";
 import Navbar from "../components/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -7,6 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) setUserName(storedName); 
+  }, []);
   const HandleClubs = () => {
     console.log("happening");
     navigate("/ClubOverview");
@@ -59,11 +64,11 @@ const HomePage = () => {
               <h1 className="text-xl font-bold">MNNITClubHub</h1>
               <div className="flex justify-between">
                 <button
-                  onClick={EditProfile} // Consistent function name
+                  onClick={EditProfile} 
                   className="px-6 flex items-center space-x-2"
                 >
                   <FontAwesomeIcon icon={faUser} />
-                  <span>Shourya</span>
+                  <span>{userName || "User"}</span>
                 </button>
               </div>
             </nav>
