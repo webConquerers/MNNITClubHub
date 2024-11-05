@@ -6,3 +6,11 @@ Enjoy website on your own system
 --> npm i
 
 --> npm run dev
+
+for backend create a new folder and then  run following in integrated terminal
+
+--> cd *name of created folder* 
+
+--> npm i
+
+--> npm start
