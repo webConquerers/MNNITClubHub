@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import "../style/SignUp.css";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -13,14 +13,14 @@ function SignUpPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:3001/RegUser', { name, email, password })
+    axios.post('http://localhost:3001/api/user/RegUser', { name, email, password })
       .then(result => {
         console.log(result);
         if (result.data.success) {
           toast.success("Registration successful!", {
             autoClose: 3000
           });
-          navigate('/LoginUser');  
+          navigate('api/user/LoginUser');  
         } else {
           if (result.data.message === "User already registered") {
             toast.error("Registration failed: User already registered", {

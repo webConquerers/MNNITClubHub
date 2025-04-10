@@ -1,91 +1,109 @@
-import React, { useState } from "react";
-import "../style/SignUp.css";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../style/SignUp.css";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleDashboard = (event) => {
+  const handleDashboard = async (event) => {
     event.preventDefault();
     console.log("Logging in as User");
 
-    axios.post('http://localhost:3001/LoginUser', { email, password })
-      .then(result => {
-        console.log("Response data:", result.data);
-        if (result.data.success) {
-          toast.success("Login successful!", {
-            autoClose: 3000
-          });
-          localStorage.setItem("userName", result.data.user);
-          navigate('/UserPage');  
-        } else {
-          toast.error("Login failed: " + result.data.message, {
-            autoClose: 3000
-          });
+    try {
+      const result = await axios.post(
+        "http://localhost:3001/api/user/LoginUser",
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
         }
-      })
-      .catch(err => {
-        console.log("Error in login request:", err);
-        toast.error("An error occurred during login.", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 3000
-        });
-      });
+      );
+
+      console.log("Full response:", result);
+
+      if (result.data.success) {
+        toast.success("Login successful!", { autoClose: 3000 });
+
+        localStorage.setItem("userName", result.data.username);
+        localStorage.setItem("userId" , result.data.userId)
+
+        setTimeout(() => {
+          navigate("/UserPage" ); // Navigate after a short delay
+        }, 500); // Ensures localStorage is updated before navigating
+      } else {
+        toast.error(result.data.message || "Login failed", { autoClose: 3000 });
+        setEmail("");
+        setPassword("");
+      }
+    } catch (err) {
+      console.error("Error details:", err.response?.data || err.message);
+      toast.error(
+        err.response?.data?.message || "An error occurred during login",
+        { autoClose: 3000 }
+      );
+    }
   };
 
   const handleRegistration = () => {
-    navigate('/RegUser');  
+    navigate("/RegUser");
   };
 
   return (
     <div className="bg">
       <div className="wrapper">
-        <form onSubmit={handleDashboard}>
+        <form onSubmit={async (e) => await handleDashboard(e)}>
           <h1>Login</h1>
+
           <div className="input-box">
             <label htmlFor="email">Email-Id</label>
             <input
               className="px-5"
-              type="text"
+              type="email"
               id="email"
-              placeholder="Email Id"
+              placeholder="Enter your Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
-            <i className="bx bx-lock"></i>
           </div>
+
           <div className="input-box">
             <label htmlFor="password">Password</label>
             <input
               className="px-5"
               type="password"
-              placeholder="Password"
               id="password"
+              placeholder="Enter your Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
+
           <button type="submit" className="btn">
             Login
           </button>
-          <button id="oauth" className="p-2">
-            <a href="/oauth">Login with Google</a>
-          </button>
-          <div className="text-sm px-3">
+
+          <div className="text-sm px-3 flex">
             <p>Not Registered?</p>
             <button
-              className="text-sky-900 px-0 py-0"
-              id="register"
+              className="text-gray-300 px-0 hover:text-cyan-600 py-0"
               onClick={handleRegistration}
             >
               Click here
             </button>
           </div>
+
+          <button id="oauth" className="p-2">
+            <a href="/oauth">Login with Google</a>
+          </button>
         </form>
         <ToastContainer />
       </div>

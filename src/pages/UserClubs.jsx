@@ -17,7 +17,8 @@ const HomePage = () => {
     navigate("/ClubOverview");
   };
   const EditProfile=()=>{
-    console.log("user profile")
+    console.log("user profile");
+    navigate("/Profile")
   }
   const clubs = [
     {
@@ -96,6 +97,9 @@ const HomePage = () => {
                     </div>
                   ))}
                 </div>
+              </section>
+              <section className="">
+                if(userId==)
               </section>
             </main>
           </div>
