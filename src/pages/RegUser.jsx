@@ -1,9 +1,9 @@
-import  { useState } from "react";
+import { useState } from "react";
 import "../style/SignUp.css";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SignUpPage() {
   const [name, setName] = useState("");
@@ -13,30 +13,33 @@ function SignUpPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:3001/api/user/RegUser', { name, email, password })
-      .then(result => {
+    axios
+      .post("http://localhost:3001/api/user/RegUser", { name, email, password })
+      .then((result) => {
         console.log(result);
         if (result.data.success) {
           toast.success("Registration successful!", {
-            autoClose: 3000
+            autoClose: 3000,
           });
-          navigate('api/user/LoginUser');  
+          setTimeout(() => {
+            navigate("/LoginUser"); // Navigate after a short delay
+          }, 500);
         } else {
           if (result.data.message === "User already registered") {
             toast.error("Registration failed: User already registered", {
-              autoClose: 3000
+              autoClose: 3000,
             });
           } else {
             toast.error("Registration failed: " + result.data.message, {
-              autoClose: 3000
+              autoClose: 3000,
             });
           }
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Error in registration request:", err);
         toast.error("email already exists", {
-          autoClose: 3000
+          autoClose: 3000,
         });
       });
   };
@@ -92,9 +95,9 @@ function SignUpPage() {
           </button>
         </form>
       </div>
-      <ToastContainer /> 
+      <ToastContainer />
     </div>
   );
 }
 
-export default SignUpPage; 
+export default SignUpPage;

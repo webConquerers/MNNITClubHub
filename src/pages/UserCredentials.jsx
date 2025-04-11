@@ -1,5 +1,5 @@
 // UserProfile.js
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import '../style/UserCredentials.css';
 
 function UserCredentials({ userData }) {

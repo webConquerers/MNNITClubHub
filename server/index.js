@@ -4,7 +4,7 @@ import userRoute from "../server/routes/userRoutes.js";
 import  clubRoute from "../server/routes/clubRoute.js"
 import connectDB from "./db_connect.js";
 import adminRoute from "../server/routes/adminRoutes.js"
-import { requestToJoinClub } from "./controllers/clubController/joinClubRequest.js";
+import requestRoute from "../server/routes/requestsRoute.js"
 import announcementRoutes from "../server/routes/announcements.js"
 const app = express();
 
@@ -21,9 +21,9 @@ app.use(cors(corsOption));
 // Connect to DB and start server
 connectDB().then(() => {
   app.use("/api/user", userRoute);
-  app.use("/api/joinClub", requestToJoinClub)
   app.use("/api", clubRoute)
   app.use("/api",adminRoute)
+  app.use("/api/request",requestRoute )
   app.use("/api/announcements", announcementRoutes)
   app.listen(3001, () => {
     console.log("Server is running on port 3001");

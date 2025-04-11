@@ -1,23 +1,31 @@
+// controllers/userController.js
 import { Club } from "../../models/clubModel.js";
-import { User } from "../../models/userModel.js";
 
-export const getUserClubs = async (req, res) => {
+export const getUserClubRequests = async (req, res) => {
+  const { userId } = req.params;
+
   try {
-    // 1. Find the user
-    const user = await User.findById(req.params.id)
-      .populate('clubs', 'name description');
+    const clubs = await Club.find({
+      members: {
+        $elemMatch: { user: userId }
+      }
+    }).select("name description members");
 
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
+    const result = clubs.map((club) => {
+      const member = club.members.find(
+        (m) => m.user.toString() === userId
+      );
 
-    // 2. Find all clubs where the user is the admin
-    const adminClubs = await Club.find({ admin: user.id })
-      .populate('members.user', 'name email');
+      return {
+        name: club.name,
+        description: club.description,
+        status: member?.status || "unknown"
+      };
+    });
 
-    res.json({ success: true, user, adminClubs });
+    res.status(200).json(result);
   } catch (error) {
-    console.error("Error in fetching user:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Error fetching user club requests:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };

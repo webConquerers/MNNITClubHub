@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import Footer from "../components/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Plus } from "lucide-react";
 import CreateClub from "./ClubCreateForm";
-import AdminSection from "./Dashboard/userAdminClubs.jsx";
 
 const HomePage = () => {
   const [userName, setUserName] = useState("");
@@ -37,12 +36,13 @@ const HomePage = () => {
     fetchClubs();
   }, [storedUserId]);
 
-  const HandleClubs = () => {
-    navigate("/UserClubs");
-  };
-  
-  const HandleUser = () => {
-    navigate("/UsePage");
+  const HandleJoin = async (clubId) => {
+    try {
+      const res = await axios.post(`http://localhost:3001/api/request/join/${clubId}`,{userId:storedUserId})
+      alert(res.data.message)
+    } catch (error) {
+      alert(error.response.data.message || "Something went wrong")
+    }
   };
 
   return (
@@ -53,14 +53,14 @@ const HomePage = () => {
             <nav className="bg-sky-900 text-white p-4 flex justify-between">
               <h1 className="text-xl font-bold">MNNITClubHub</h1>
               <div className="flex justify-between">
+                <a href={`/UserClubs/${storedUserId}`}>
+                  <button className="text-lg text-white font-serif font-normal py-0">
+                    Your Clubs
+                  </button>
+                </a>
+
                 <button
-                  onClick={HandleClubs}
-                  className="text-lg text-white font-serif font-normal py-0"
-                >
-                  Your Clubs
-                </button>
-                <button
-                  onClick={HandleUser}
+                  
                   className="px-6 flex items-center space-x-2 py-0"
                 >
                   <FontAwesomeIcon icon={faUser} />
@@ -105,19 +105,25 @@ const HomePage = () => {
                         {club.name}
                       </h3>
                       <p className="text-gray-300 mb-4">{club.description}</p>
-                      <a href={`/club/${club._id}`}>
-                        <button className="bg-sky-700 text-gray-100 px-4 py-2 rounded hover:bg-sky-500">
-                          View
-                        </button>
-                      </a>
+                      <div className="flex ">
+                        <a href={`/club/${club._id}`}>
+                          <button className="bg-sky-700 text-gray-100 px-4 py-2 rounded hover:bg-sky-500">
+                            View
+                          </button>
+                        </a>
+                        <div className="pl-0.5 ">
+                          <button className=" bg-black h-10 hover:-translate-y-1 hover:bg-blue-500 rounded-lg px-2"
+                          onClick={()=> HandleJoin(club._id)}>
+                            Join{" "}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               </section>
 
-              <section className="">
-                <AdminSection userId={storedUserId} />
-              </section>
+              
             </main>
             <Footer className="bottom-0" />
           </div>
