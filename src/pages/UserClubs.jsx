@@ -4,12 +4,13 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import Footer from "../components/Footer";
 import axios from "axios";
 import AdminSection from "./Dashboard/userAdminClubs";
+import { useParams } from "react-router-dom";
 
 const HomePage = () => {
   
   const [userName, setUserName] = useState("");
   const [clubRequests, setClubRequests] = useState([]);
-
+  const token = useParams();
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
     const userId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
@@ -17,7 +18,11 @@ const HomePage = () => {
 
     const fetchClubRequests = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/api/user/club-requests/${userId}`);
+        const res = await axios.get(`http://localhost:3001/api/user/club-requests/${userId}`,
+           {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setClubRequests(res.data);
       } catch (err) {
         console.error("Error fetching club requests:", err);

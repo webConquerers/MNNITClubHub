@@ -23,9 +23,13 @@ const HomePage = () => {
   useEffect(() => {
     const fetchClubs = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3001/api/clubs/${storedUserId}`
-        );
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`http://localhost:3001/api/clubs/${storedUserId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+});
+
         setClubs(response.data.clubs);
       } catch (error) {
         console.error("Error fetching clubs:", error);
@@ -38,7 +42,14 @@ const HomePage = () => {
 
   const HandleJoin = async (clubId) => {
     try {
-      const res = await axios.post(`http://localhost:3001/api/request/join/${clubId}`,{userId:storedUserId})
+      const token = localStorage.getItem("token");
+
+      const res =await axios.post(
+        `http://localhost:3001/api/request/join/${clubId}`,
+        { userId: storedUserId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
       alert(res.data.message)
     } catch (error) {
       alert(error.response.data.message || "Something went wrong")
@@ -98,7 +109,7 @@ const HomePage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {clubs.map((club) => (
                     <div
-                      key={club.id}
+                      key={club._id}
                       className="bg-gray-800 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
                     >
                       <h3 className="text-xl font-bold text-sky-400 mb-2">

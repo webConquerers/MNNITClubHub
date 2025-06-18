@@ -22,7 +22,8 @@ function SignUpPage() {
             autoClose: 3000,
           });
           setTimeout(() => {
-            navigate("/LoginUser"); // Navigate after a short delay
+            navigate("/verifyEmail", { state: { email } });
+            localStorage.setItem("pendingEmail", email);
           }, 500);
         } else {
           if (result.data.message === "User already registered") {

@@ -1,8 +1,7 @@
 // server.js
-const express = require('express');
-const connectDB = require('./db');
-const clubRoutes = require('./routes/clubs');
-
+import express from "express"
+import connectDB from "./db.js"
+import clubRoutes from "./server/routes/clubRoute.js"
 const app = express();
 app.use(express.json());
 
@@ -12,5 +11,5 @@ connectDB();
 // Routes
 app.use('/api/clubs', clubRoutes);
 
-const PORT = 5000;
+const PORT = 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

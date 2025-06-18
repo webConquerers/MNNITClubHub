@@ -8,7 +8,7 @@ export const getAllClubs= async(req,res)=>{
   try {
     
     const clubs = await Club.find()
-      .populate("members.user", "name email id") // Populate member details
+      .populate("members.user", "name email") // Populate member details
       .exec();
 
     res.status(200).json({ success: true, clubs });

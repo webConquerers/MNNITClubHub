@@ -1,21 +1,26 @@
+// pages/LoginPage.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
+import { saveAuthToken, storeUserSession } from "../../server/utils/authUtils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/SignUp.css";
+import axios from "axios";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleDashboard = async (event) => {
-    event.preventDefault();
-    console.log("Logging in as User");
-
+  const handleResetPass = () => {
+  
+    navigate("/ForgotPassword")
+  };
+  const handleEmailLogin = async (e) => {
+    e.preventDefault();
     try {
-      const result = await axios.post(
+      const res = await axios.post(
         "http://localhost:3001/api/user/LoginUser",
         { email, password },
         {
@@ -26,28 +31,24 @@ function LoginPage() {
         }
       );
 
-      console.log("Full response:", result);
+      console.log("Full response:", res);
 
-      if (result.data.success) {
-        toast.success("Login successful!", { autoClose: 3000 });
 
-        localStorage.setItem("userName", result.data.username);
-        localStorage.setItem("userId" , result.data.userId)
+      if (res.data.success) {
+        toast.success("Login successful!", { autoClose: 2000 });
+        saveAuthToken(res.data.token);
+        storeUserSession(res.data.username, res.data.userId);
 
-        setTimeout(() => {
-          navigate("/UserPage" ); // Navigate after a short delay
-        }, 500); // Ensures localStorage is updated before navigating
+        setTimeout(() => navigate("/UserPage"), 500);
+      } else if (res.data.verified === false) {
+        toast.warn("Email not verified. Please verify your email.");
+        localStorage.setItem("pendingEmail", email);
+        navigate("/verifyEmail");
       } else {
-        toast.error(result.data.message || "Login failed", { autoClose: 3000 });
-        setEmail("");
-        setPassword("");
+        toast.error(res.data.message || "Login failed");
       }
     } catch (err) {
-      console.error("Error details:", err.response?.data || err.message);
-      toast.error(
-        err.response?.data?.message || "An error occurred during login",
-        { autoClose: 3000 }
-      );
+      toast.error(err.response?.data?.message || "Login error");
     }
   };
 
@@ -58,16 +59,14 @@ function LoginPage() {
   return (
     <div className="bg">
       <div className="wrapper">
-        <form onSubmit={async (e) => await handleDashboard(e)}>
+        <form onSubmit={handleEmailLogin}>
           <h1>Login</h1>
 
           <div className="input-box">
-            <label htmlFor="email">Email-Id</label>
+            <label>Email</label>
             <input
-              className="px-5"
               type="email"
-              id="email"
-              placeholder="Enter your Email"
+              placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -75,35 +74,42 @@ function LoginPage() {
           </div>
 
           <div className="input-box">
-            <label htmlFor="password">Password</label>
+            <label>Password</label>
             <input
-              className="px-5"
               type="password"
-              id="password"
-              placeholder="Enter your Password"
+              placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
+         
 
-          <button type="submit" className="btn">
-            Login
-          </button>
+          <button type="submit" className="btn">Login</button>
 
-          <div className="text-sm px-3 flex">
-            <p>Not Registered?</p>
-            <button
-              className="text-gray-300 px-0 hover:text-cyan-600 py-0"
-              onClick={handleRegistration}
+          <div className="flex-col justify-around">
+            
+            <div className="text-sm mt-2">
+              <p>Not Registered? 
+                <button onClick={handleRegistration} className="text-cyan-500 ml-2">
+                  Sign Up
+                </button>
+              </p>
+            </div>
+            <span onClick={ handleResetPass}>forgot Password</span>
+            </div>
+
+          <hr className="my-4" />
+
+          <div className="text-center">
+            <p className="text-gray-400">Or</p>
+            <a
+              className="mt-2 block bg-red-600 text-white rounded py-2 hover:bg-red-700"
+              href="http://localhost:3001/api/auth/google"
             >
-              Click here
-            </button>
+              Continue with Google
+            </a>
           </div>
-
-          <button id="oauth" className="p-2">
-            <a href="/oauth">Login with Google</a>
-          </button>
         </form>
         <ToastContainer />
       </div>

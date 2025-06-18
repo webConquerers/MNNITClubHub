@@ -28,6 +28,7 @@ export default {
   },
   darkMode: "class", // Enables dark mode (manual toggle)
   plugins: [
+   
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/aspect-ratio"),

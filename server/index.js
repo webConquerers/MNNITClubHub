@@ -1,36 +1,64 @@
+/* eslint-disable no-undef */
+import dotenv from "dotenv";
+dotenv.config(); // ✅ Must be before process.env usage
+
 import express from "express";
 import cors from "cors";
-import userRoute from "../server/routes/userRoutes.js";
-import  clubRoute from "../server/routes/clubRoute.js"
-import connectDB from "./db_connect.js";
-import adminRoute from "../server/routes/adminRoutes.js"
-import requestRoute from "../server/routes/requestsRoute.js"
-import announcementRoutes from "../server/routes/announcements.js"
-const app = express();
+import session from "express-session";
+import passport from "passport";
+import "./config/passport.js";
 
-// Middleware should be before routes
+import userRoute from "./routes/userRoutes.js";
+import clubRoute from "./routes/clubRoute.js";
+import adminRoute from "./routes/adminRoutes.js";
+import requestRoute from "./routes/requestsRoute.js";
+import announcementRoutes from "./routes/announcements.js";
+import router from "./routes/oAuthRoutes.js";
+import connectDB from "./db_connect.js";
+
+const app = express();
+const PORT = process.env.PORT ;
 app.use(express.json());
 
-// CORS configuration
+// CORS
 const corsOption = {
-  origin: "http://localhost:5173",
+  origin: process.env.VITE_FRONTEND_BASE_URL,
   credentials: true,
 };
 app.use(cors(corsOption));
 
-// Connect to DB and start server
+// Session middleware
+app.use(
+  session({
+    // eslint-disable-next-line no-undef
+    secret: process.env.JWT_SECRET || "fallback_secret", // fallback is optional
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+      secure: false,
+    },
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes
 connectDB().then(() => {
   app.use("/api/user", userRoute);
-  app.use("/api", clubRoute)
-  app.use("/api",adminRoute)
-  app.use("/api/request",requestRoute )
-  app.use("/api/announcements", announcementRoutes)
-  app.listen(3001, () => {
-    console.log("Server is running on port 3001");
+  app.use("/api", clubRoute);
+  app.use("/api", adminRoute);
+  app.use("/api/request", requestRoute);
+  app.use("/api/auth", router);
+  app.use("/api/announcements", announcementRoutes);
+
+  app.listen(`${PORT}`, () => {
+    console.log(`Server is running on port ${PORT}`);
   });
 });
-
-
 
 
 
