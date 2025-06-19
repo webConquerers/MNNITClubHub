@@ -19,7 +19,6 @@ const CreateClub = ({ onClose }) => {
         return;
       }
 
-      console.log("Submitting:", { clubName, description, adminId });
 
       const response = await axios.post(
         "http://localhost:3001/api/createClub",
@@ -35,7 +34,7 @@ const CreateClub = ({ onClose }) => {
         onClose();
       }
     } catch (error) {
-      console.error("Creation error:", error.response?.data || error.message);
+      console.error("Creation error:",  error.message);
       toast.error(error.response?.data?.message || "Failed to create club");
     } finally {
       setIsSubmitting(false);

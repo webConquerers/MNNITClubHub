@@ -21,7 +21,7 @@ export const resetPassword = async (req, res) => {
     if (typeof newPassword !== "string" || newPassword.trim().length < 6) {
       return res.status(400).json({ success: false, message: "Password must be at least 6 characters" });
     }
-    console.log(newPassword);
+    
     user.password = await bcrypt.hash(newPassword, 10);
     user.verificationCode = null;
     user.otpExpiresAt = null;

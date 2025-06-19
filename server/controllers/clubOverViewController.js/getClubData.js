@@ -3,7 +3,7 @@ import { Club } from "../../models/clubModel.js"
 export const ClubData = async(req, res) =>{
     try {
         const {clubId} = req.params;
-        console.log(clubId)
+        
         const club = await Club.findById(clubId).populate({path:"members.user",
             select:"name"});
     

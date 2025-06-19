@@ -3,7 +3,7 @@ import { User } from "../../models/userModel.js";
 
 export const createClub = async (req, res) => {
   try {
-    console.log("Request received:", req.body);
+   
     
     const { name, description, adminId } = req.body;
     

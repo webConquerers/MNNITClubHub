@@ -11,10 +11,10 @@ function EventAdd() {
 
   const navigate = useNavigate();
   const {clubId} = useParams(); // Replace or pass via props/context
-  console.log(clubId);
+  
   const userId = localStorage.getItem("userId"); // Replace or pass via auth context
-console.log( userId)
-console.log(clubId|| "No club Id")
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

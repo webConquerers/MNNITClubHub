@@ -2,7 +2,7 @@ import express from "express"
 import { signup } from "../controllers/userController/signupControl.js";
 import { login } from "../controllers/userController/loginControl.js";
 import {  getUserClubRequests} from "../controllers/dashBoardController/getUserClubs.js";
-import {  verifyEmailForSignup } from "../controllers/userController/verifyEmailForSignup.js";
+import { verifyEmailForSignup } from "../controllers/userController/verifyEmail.js";
 import { resendOTP } from "../controllers/userController/resendOtp.js";
 import {requestPasswordReset} from "../controllers/resetPass/requestOtp.js";
 import {resetPassword} from "../controllers/resetPass/resetPassword.js"

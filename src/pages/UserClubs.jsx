@@ -35,7 +35,7 @@ const HomePage = () => {
 
 
   const EditProfile = () => {
-    console.log("user profile");
+    console.log("pending");
   };
 
   return (

@@ -31,8 +31,7 @@ function LoginPage() {
         }
       );
 
-      console.log("Full response:", res);
-
+     
 
       if (res.data.success) {
         toast.success("Login successful!", { autoClose: 2000 });

@@ -16,7 +16,7 @@ function SignUpPage() {
     axios
       .post("http://localhost:3001/api/user/RegUser", { name, email, password })
       .then((result) => {
-        console.log(result);
+        
         if (result.data.success) {
           toast.success("Registration successful!", {
             autoClose: 3000,

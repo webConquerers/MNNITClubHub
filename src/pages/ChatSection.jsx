@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { MessageSquare } from "lucide-react";
 function ChatsSection({ clubId, userId }) {
   const [discussions, setDiscussions] = useState([]);
   const [content, setContent] = useState("");
 
-  const backendUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+ 
   // Fetch discussions function
   const fetchDiscussions = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/clubs/${clubId}/getChats`);
+      const res = await fetch(`${process.env.VITE_BACKEND_BASE_URL}/clubs/${clubId}/getChats`);
       const data = await res.json();
       setDiscussions(Array.isArray(data.chats) ? data.chats : []);
     } catch (error) {

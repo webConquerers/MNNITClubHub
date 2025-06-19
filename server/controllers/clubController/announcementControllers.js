@@ -5,8 +5,7 @@ export const createAnnouncement = async (req, res) => {
   try {
    
     const { clubId , title, content, userId, registerLink } = req.body;
-    console.log(clubId);
-    console.log(title);
+    
     const club = await Club.findById(clubId);
     if (!club) return res.status(404).json({ message: "Club not found " });
 

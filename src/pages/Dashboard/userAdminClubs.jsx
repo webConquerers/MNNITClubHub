@@ -6,7 +6,7 @@ const AdminSection = ({ userId }) => {
   const [adminClubs, setAdminClubs] = useState([]);
 
   useEffect(() => {
-    console.log(userId)
+   
     axios.get(`http://localhost:3001/api/admin-clubs/${userId}`)
       .then(res => {
         setAdminClubs(res.data.adminClubs);
@@ -35,7 +35,7 @@ const AdminSection = ({ userId }) => {
             : club
         )
       );
-      console.log(adminClubs)
+      
     } catch (err) {
       console.error("Error approving member:", err);
     }

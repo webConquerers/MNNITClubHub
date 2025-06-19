@@ -18,7 +18,7 @@ export default function EmailVerify() {
       ? localStorage.getItem("pendingResetEmail")
       : localStorage.getItem("pendingEmail"));
 
-  console.log("Resolved email:", email);
+ 
 
   useEffect(() => {
     inputs.current[0]?.focus();
@@ -65,8 +65,7 @@ export default function EmailVerify() {
 
     try {
       setLoading(true);
-      console.log("Verifying with:", { code: fullOtp, email });
-
+      
       const endpoint =
         context === "signup"
           ? "http://localhost:3001/api/user/verifyemail/signup"
